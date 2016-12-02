@@ -26,6 +26,7 @@ while True:
 	c.send(str(g))
 	print "Sent alpha"
 	beta = square_and_multiply(g, a, p)
+	beta = 3
 	c.send(str(beta))
 	print "sent beta"
 

@@ -28,7 +28,6 @@ print "beta recieved: ",beta
 y1 = square_and_multiply(alpha, k, p)
 
 s.send(str(y1))
-print "sent y1"
 
 y2 = square_and_multiply(beta, k, p)
 
