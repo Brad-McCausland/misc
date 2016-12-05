@@ -38,24 +38,19 @@ while True:
 	y2 = square_and_multiply(y1, a, p)
 	print "Y2: ",y2
 
-	#y1 = c1, y2 = s
 	ciphertext = int(c.recv(port))
-	print "Ciphertext: ", ciphertext
 
-	#find inverse of s
-	x = (ciphertext * modinv(y2, p))
-	print "1: ", x
-	x = square_and_multiply(ciphertext, modinv(y2, p), 1)
-	print "2: ", x
+	#Decrypt AES key
+	x = (ciphertext * modinv(y2, p)) % p
 
-	#cipher = AES.new(key, AES.MODE_CFB, iv)
-	#message = cipher.decrypt(c.recv(8001))
+	x = format(x, '#034b')[2:]
 
-	#print message
+	print x
+
+	#AES may only work with 16 bits
+	iv = "1234567890123456"
+	cipher = AES.new(x, AES.MODE_CFB)
+	message = cipher.decrypt(c.recv(8001))
+
+	print message
 	c.close()
-
-
-#alpha = 'public base', or 'a' in the video
-#a = 'r'
-#k = 
-#exchange 

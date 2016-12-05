@@ -1,7 +1,7 @@
 from socket import *
 from Crypto.Cipher import AES
 from Crypto import Random
-from methods import square_and_multiply
+from methods import *
 from random import getrandbits
 
 s = socket()
@@ -40,9 +40,19 @@ print "Y2: ",y2
 ciphertext = (y2 * x) % p
 print "Ciphertext: ",str(ciphertext)
 s.send(str(ciphertext))
+
+print "length: ", len(str(x))
+
+x = format(x, '#034b')[2:]
+#AES may only work with 16 bits
+print x
+#key = passwordToAesKey(str(x))
+iv = "1234567890123456"
+cipher = AES.new(x, AES.MODE_CFB, iv)
+message = cipher.encrypt(message)
+
+s.send(message)
+
 s.close()
 
 print "Message sent to localhost port 8001"
-
-#cipher = AES.new(key, AES.MODE_CFB, iv)
-#message = cipher.encrypt(message)
