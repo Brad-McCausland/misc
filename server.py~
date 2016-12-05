@@ -1,19 +1,35 @@
-#Bob
+# Bradley McCausland - W01053708
+# CS578 - Rrushi
+# 12/7/2016
+# Assignment 4 - Server
 
+import sys
 from socket import *
+from methods import *
+from random import getrandbits
+from time import sleep
+
 from Crypto.Cipher import AES
 from Crypto.Util import Counter
 from Crypto import Random
-from methods import *
-from random import getrandbits
-import sys
 
+DEBUG = False
+port = 8001
 s = socket()
 host = gethostname()
-port = 8001
+
+#parse options
+try:
+	if 'd' in sys.argv[1]:
+		DEBUG = True
+	if 's' in sys.argv[1]:
+		port = input("Enter a port number: ")
+except:
+	pass
+
 s.bind((host, port))
 
-#private key NOTE: WIKI CLAIMS 1 <= a <= q-1
+#randomize private key
 a = getrandbits(32)
 
 #defined constants
@@ -24,33 +40,39 @@ g = 1659252438 #alpha
 print "Starting server on host", host
 s.listen(0)
 
+#server loop
 while True:
 	c, addr = s.accept()
 	
 	c.send(str(g))
-	print "Sent alpha"
+
 	beta = square_and_multiply(g, a, p)
 	c.send(str(beta))
-	print "sent beta"
 
 	y1 = int(c.recv(port))
-	print "recieved y1: ",y1
 
 	y2 = square_and_multiply(y1, a, p)
-	print "Y2: ",y2
 
-	ciphertext = int(c.recv(port))
+	#recover encrypted AES key
+	ciphertext = c.recv(port)
+	print ciphertext
+	#sometimes fails on this line
+	ciphertext = int(ciphertext)
 
 	#Decrypt AES key
 	x = (ciphertext * modinv(y2, p)) % p
 
+	#format key to 32 bits
 	x = format(x, '#034b')[2:]
 
-	print x
-
-	#AES may only work with 16 bits
+	#init cryptosystem
+	ctr = Counter.new(128)
 	cipher = AES.new(x, AES.MODE_CTR, counter=ctr)
-	message = cipher.decrypt(c.recv(8001))
+	message = cipher.decrypt(c.recv(port))
 
-	print message
+	if DEBUG:
+		print "Sending g:", str(g)
+		print "Sending beta:", str(beta)
+
+	print "Decrypted message: ", message
 	c.close()
