@@ -1,5 +1,6 @@
 from socket import *
 from Crypto.Cipher import AES
+from Crypto.Util import Counter
 from Crypto import Random
 from methods import *
 from random import getrandbits
@@ -47,8 +48,7 @@ x = format(x, '#034b')[2:]
 #AES may only work with 16 bits
 print x
 #key = passwordToAesKey(str(x))
-iv = "1234567890123456"
-cipher = AES.new(x, AES.MODE_CFB)
+cipher = AES.new(x, AES.MODE_CTR, counter=ctr)
 message = cipher.encrypt(message)
 
 s.send(message)

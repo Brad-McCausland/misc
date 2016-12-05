@@ -2,6 +2,7 @@
 
 from socket import *
 from Crypto.Cipher import AES
+from Crypto.Util import Counter
 from Crypto import Random
 from methods import *
 from random import getrandbits
@@ -48,8 +49,8 @@ while True:
 	print x
 
 	#AES may only work with 16 bits
-	iv = "1234567890123456"
-	cipher = AES.new(x, AES.MODE_CFB, iv)
+	ctr = Counter.new(128)
+	cipher = AES.new(x, AES.MODE_CTR, counter=ctr)
 	message = cipher.decrypt(c.recv(8001))
 
 	print message
