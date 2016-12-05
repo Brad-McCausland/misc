@@ -11,6 +11,9 @@ port = 8001
 #private key
 k = getrandbits(32)
 
+#AES key
+x = 1234567890
+
 #defined constants
 p = 4094027087
 q = 2047013543
@@ -32,9 +35,11 @@ print "sent y1"
 
 y2 = square_and_multiply(beta, k, p)
 
-print y2
+print "Y2: ",y2
 
-#s.send(message)
+ciphertext = (y2 * x) % p
+print "Ciphertext: ",str(ciphertext)
+s.send(str(ciphertext))
 s.close()
 
 print "Message sent to localhost port 8001"

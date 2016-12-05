@@ -1,0 +1,17 @@
+from methods import *
+from math import pow
+from random import randint
+
+print gcd(888, 54)
+print modinv(5, 6)
+
+#for i in range(10):
+#	x = randint(2, 100)
+#	y = randint(2, 10) #increase causes trouble
+#	z = randint(2, 100)
+#	print x, "^", y, " % ", z, "equals: ", square_and_multiply(x, y, z)
+#	print "Actual:", pow(x, y)%z
+#	print ""
+
+#print 2, "^", 2, " % ", 5, "equals: ", square_and_multiply(2, 2, 5)
+#print "Actual:", pow(2, 2)%5
