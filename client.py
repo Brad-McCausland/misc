@@ -33,10 +33,6 @@ k = getrandbits(32)
 #randomize AES key
 x = getrandbits(32)
 
-#defined constants
-p = 4094027087
-q = 2047013543
-
 #message to send
 message = raw_input('Connection established. Enter message: ')
 
@@ -45,6 +41,7 @@ s.connect((host, port))
 #recieve public keys
 alpha = int(s.recv(port))
 beta  = int(s.recv(port))
+p     = int(s.recv(port))
 
 y1 = square_and_multiply(alpha, k, p)
 s.send(str(y1))

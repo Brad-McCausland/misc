@@ -7,6 +7,7 @@ import sys
 from socket import *
 from methods import *
 from random import getrandbits
+from time import sleep
 
 from Crypto.Cipher import AES
 from Crypto.Util import Counter
@@ -47,6 +48,8 @@ while True:
 
 	beta = square_and_multiply(g, a, p)
 	c.send(str(beta))
+	sleep(0.1)
+	c.send(str(p))
 
 	y1 = int(c.recv(port))
 
